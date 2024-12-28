@@ -22,12 +22,17 @@
  *   - 14.31818 MHz (Atari XL/XE NTSC)
  *
  * Change History:
+ *   Version 1.1 - replaced WiringPi library with functions from linux/i2c-dev.h
  *   Version 1.0 - Initial release
  *
  */
 
-#include <iostream>
-#include <wiringPiI2C.h>
+#include <fcntl.h>
+#include <iostream> 
+#include <linux/i2c-dev.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 
 #define SI5351_ADDRESS 0x60
@@ -65,6 +70,63 @@
 #define SI5351_REGISTER_49_MULTISYNTH0_PARAMETERS_8 49
 
 #define SI5351_REGISTER_177_PLL_RESET 177
+
+
+#define I2C_DEVICE "/dev/i2c-1"
+
+
+
+/**
+ * Initialize the I2C bus and set the target device address.
+ *
+ * @param deviceAddress The address of the I2C device.
+ * @return File descriptor for the I2C bus, or -1 on failure.
+ */
+int wiringPiI2CSetup(int deviceAddress) {
+    const char *device = I2C_DEVICE;
+    int file;
+
+    // Open the I2C bus
+    if ((file = open(device, O_RDWR)) < 0) {
+        perror("Failed to open the I2C bus");
+        return -1;
+    }
+
+    // Set the I2C slave address
+    if (ioctl(file, I2C_SLAVE, deviceAddress) < 0) {
+        perror("Failed to set I2C slave address");
+        close(file);
+        return -1;
+    }
+
+    return file;
+}
+
+/**
+ * Write an 8-bit value to a specific register on the I2C device.
+ *
+ * @param file File descriptor of the I2C bus (returned by wiringPiI2CSetup).
+ * @param reg The register address to write to.
+ * @param value The 8-bit value to write.
+ * @return 0 on success, -1 on failure.
+ */
+int wiringPiI2CWriteReg8(int file, uint8_t reg, uint8_t value) {
+    uint8_t buffer[2];
+    buffer[0] = reg;    // Register address
+    buffer[1] = value;  // Value to write
+
+    // Write the register address and value to the I2C device
+    if (write(file, buffer, 2) != 2) {
+        perror("Failed to write to I2C device");
+        return -1;
+    }
+
+    return 0;
+}
+
+
+
+
 
 void writeRegister(int fd, int reg, int value) {
     if (wiringPiI2CWriteReg8(fd, reg, value) == -1) {

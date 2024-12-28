@@ -10,6 +10,3 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Add the executable
 add_executable(Si5351ForAtari8bit Si5351ForAtari8bit.cc)
 
-# Link the WiringPi library
-target_link_libraries(Si5351ForAtari8bit PRIVATE wiringPi)
-

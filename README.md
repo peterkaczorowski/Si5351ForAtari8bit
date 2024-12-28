@@ -1,7 +1,7 @@
 # SI5351 Configurations for Selected Frequencies Found in Atari 8-bit Computers
 
 ## Overview
-This project demonstrates how to configure the SI5351 clock generator for selected frequencies commonly found in Atari 8-bit computers. The program is written in C++ and utilizes the WiringPi library for I2C communication. It is designed to run on a Raspberry Pi with an attached extension module containing the SI5351 clock generator.
+This project demonstrates how to configure the SI5351 clock generator for selected frequencies commonly found in Atari 8-bit computers. The program is written in C++ and utilizes the linux/i2c-dev.h library for I2C communication. It is designed to run on a Raspberry Pi with an attached extension module containing the SI5351 clock generator.
 
 ## Features
 The program configures the SI5351 to generate the following frequencies:
@@ -20,7 +20,6 @@ The program configures the SI5351 to generate the following frequencies:
 ## Requirements
 - Raspberry Pi Zero/Zero 2/3/4/5
 - C++17 compatible compiler
-- WiringPi library
 - SI5351 clock generator
 - I2C interface
 
@@ -54,14 +53,13 @@ The program communicates with the SI5351 chip over I2C to configure its PLL and 
 - **`CMakeLists.txt`**: The build configuration file for CMake.
 
 ## Notes
-- Ensure the WiringPi library is properly installed on your Raspberry Pi.
 - The I2C address for the SI5351 is set to `0x60`. Modify it in the code if your configuration differs.
 - For additional frequency configurations, refer to the SI5351 datasheet.
 
 ## Author
 Piotr D. Kaczorowski
-December 27th, 2024
-Version 1.0
+December 28th, 2024
+Version 1.1
 
 ## Contact
 - Facebook: Atari Poland by The Atarian - https://www.facebook.com/groups/ataripoland
