@@ -22,13 +22,14 @@
  *   - 14.31818 MHz (Atari XL/XE NTSC)
  *
  * Change History:
+ *   Version 1.2 - added size optimization flags to CMakeLists.txt
  *   Version 1.1 - replaced WiringPi library with functions from linux/i2c-dev.h
  *   Version 1.0 - Initial release
  *
  */
 
 #include <fcntl.h>
-#include <iostream> 
+#include <iostream>
 #include <linux/i2c-dev.h>
 #include <stdint.h>
 #include <stdio.h>
